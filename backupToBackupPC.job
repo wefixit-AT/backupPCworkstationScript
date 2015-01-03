@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# last change: 3.1.2015
+#
+# author: gregor binder
+# contact: office@wefixit.at
+# license: Creative Commons by-nc-sa 4.0 http://creativecommons.org/licenses/by-nc-sa/4.0
+
+source /path/to/backupToBackupPC.config
+
+prefix="doBackup:"
+
+$CMD
+if [ $? -eq 0 ]; then
+    ssh $USER@$SERVER $CMD_FIX_SUMMARY
+    log "$prefix backup created `date`"
+	echo "backup created `date`" >> $FILE_LOG
+	echo $TODAY > $FILE_LAST_STATE
+    return 0
+else
+    echo "backup corrupted `date`"
+    echo "backup corrupted `date`" >> $FILE_LOG
+    return 1
+fi
